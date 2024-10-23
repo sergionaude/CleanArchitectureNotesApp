@@ -1,4 +1,4 @@
-package com.sergionaude.cleanarchitecturenotesapp.presentation
+package com.sergionaude.cleanarchitecturenotesapp.presentation.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,7 +25,6 @@ class NoteFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentNoteBinding.inflate(layoutInflater)
-
         return binding!!.root
     }
 
@@ -33,10 +32,9 @@ class NoteFragment : Fragment() {
         view: View,
         savedInstanceState: Bundle?,
     ) {
+        initObserver()
         title = binding!!.noteTitle
         description = binding!!.noteContent
-
-        initObserver()
         binding?.noteBtnSave?.setOnClickListener {
             if (dataValidation()) {
                 val time = System.currentTimeMillis()
@@ -50,19 +48,13 @@ class NoteFragment : Fragment() {
                     )
                 viewModel.saveNote(note = currentNote)
             } else {
-                Toast
-                    .makeText(context, "Please fill out all the fields", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(context, "Fill out all the fields", Toast.LENGTH_SHORT).show()
             }
         }
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun dataValidation(): Boolean =
-        !(
-            title.text?.toString()?.isEmpty() == true ||
-                description.text?.toString()?.isEmpty() == true
-        )
+    private fun dataValidation(): Boolean = !(title.text?.isEmpty() == true || description.text?.isEmpty() == true)
 
     private fun initObserver() {
         viewModel.saved.observe(viewLifecycleOwner) {
@@ -70,9 +62,7 @@ class NoteFragment : Fragment() {
                 Toast.makeText(context, "Data saved", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             } else {
-                Toast
-                    .makeText(context, "An error saving note has happen", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(context, "The note was not saved", Toast.LENGTH_SHORT).show()
             }
         }
     }

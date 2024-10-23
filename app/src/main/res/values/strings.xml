@@ -2,4 +2,7 @@
     <string name="app_name">CleanArchitectureNotesApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="note_item_title">Title</string>
+    <string name="note_content_description">Note content description</string>
+    <string name="note_last_update">Last Update</string>
 </resources>

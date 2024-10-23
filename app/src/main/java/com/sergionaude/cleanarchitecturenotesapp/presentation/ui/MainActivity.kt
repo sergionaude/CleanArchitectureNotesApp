@@ -1,7 +1,8 @@
-package com.sergionaude.cleanarchitecturenotesapp
+package com.sergionaude.cleanarchitecturenotesapp.presentation.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.sergionaude.cleanarchitecturenotesapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
