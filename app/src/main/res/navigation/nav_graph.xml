@@ -20,8 +20,7 @@
         android:label="fragment_note"
         tools:layout="@layout/fragment_note" >
         <argument
-            android:name="noteId"
-            app:argType="long"
-            android:defaultValue="0L" />
+            android:name="id"
+            app:argType="long" />
     </fragment>
 </navigation>

@@ -8,8 +8,9 @@ import com.sergionaude.core.data.Note
 
 class NoteListAdapter(
     private var noteList: MutableList<Note>,
+    private val listAction: ListAction,
 ) : RecyclerView.Adapter<NoteViewHolder>() {
-    fun updateNotes(newNotes: List<Note>)  {
+    fun updateNotes(newNotes: List<Note>) {
         noteList.clear()
         noteList.addAll(newNotes)
         notifyDataSetChanged()
@@ -21,6 +22,7 @@ class NoteListAdapter(
     ): NoteViewHolder =
         NoteViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.note_item, parent, false),
+            listAction,
         )
 
     override fun getItemCount(): Int = noteList.size

@@ -28,7 +28,9 @@ class NoteViewModel(
             removeNote = RemoveNote(noteRepository = noteRepository),
         )
 
-    val saved = MutableLiveData<Boolean>()
+    val saved = MutableLiveData<Boolean>(false)
+
+    val note = MutableLiveData<Note?>()
 
     init {
         saved.postValue(false)
@@ -38,6 +40,18 @@ class NoteViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             useCases.addNote(note = note)
             saved.postValue(true)
+        }
+    }
+
+    fun getNote(idNote: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            note.postValue(useCases.getNote(id = idNote))
+        }
+    }
+
+    fun removeNote(noteValue: Note) {
+        viewModelScope.launch(Dispatchers.IO) {
+            useCases.removeNote(note = noteValue)
         }
     }
 }

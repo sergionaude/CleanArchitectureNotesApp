@@ -10,17 +10,22 @@ import java.util.Date
 
 class NoteViewHolder(
     view: View,
+    private val listAction: ListAction,
 ) : RecyclerView.ViewHolder(view) {
     private val noteLayout = view.findViewById<View>(R.id.item_note_layout)
     private val noteTitle = view.findViewById<TextView>(R.id.item_note_title)
     private val noteDescription = view.findViewById<TextView>(R.id.item_note_content)
     private val noteDate = view.findViewById<TextView>(R.id.item_note_date)
 
-    fun bind(note: Note)  {
+    fun bind(note: Note) {
         noteTitle.text = note.title
         noteDescription.text = note.content
         val sdf = SimpleDateFormat("MMM dd, HH:mm:ss")
         val resultDate = Date(note.updatedTime)
         noteDate.text = "Last updated: ${sdf.format(resultDate)}"
+
+        noteLayout.setOnClickListener {
+            listAction.onClick(note.id)
+        }
     }
 }
