@@ -16,6 +16,7 @@ class NoteViewHolder(
     private val noteTitle = view.findViewById<TextView>(R.id.item_note_title)
     private val noteDescription = view.findViewById<TextView>(R.id.item_note_content)
     private val noteDate = view.findViewById<TextView>(R.id.item_note_date)
+    private val noteWordsNumber = view.findViewById<TextView>(R.id.item_note_count_words)
 
     fun bind(note: Note) {
         noteTitle.text = note.title
@@ -27,5 +28,7 @@ class NoteViewHolder(
         noteLayout.setOnClickListener {
             listAction.onClick(note.id)
         }
+
+        noteWordsNumber.text = "Words: ${note.wordCount}"
     }
 }

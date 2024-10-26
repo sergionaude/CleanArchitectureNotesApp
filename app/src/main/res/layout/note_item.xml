@@ -43,14 +43,25 @@
         <TextView
             android:id="@+id/item_note_date"
             style="@style/Detail"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/note_last_update"
+            android:gravity="start"
+            android:maxLines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_note_content" />
+
+        <TextView
+            android:id="@+id/item_note_count_words"
+            style="@style/Detail"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:hint="@string/note_last_update"
             android:gravity="end"
             android:maxLines="1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/item_note_content" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

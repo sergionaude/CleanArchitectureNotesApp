@@ -1,8 +1,12 @@
 package com.sergionaude.cleanarchitecturenotesapp.presentation.ui.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -10,10 +14,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
+import com.sergionaude.cleanarchitecturenotesapp.R
 import com.sergionaude.cleanarchitecturenotesapp.databinding.FragmentNoteBinding
 import com.sergionaude.cleanarchitecturenotesapp.framework.vm.NoteViewModel
 import com.sergionaude.core.data.Note
-import timber.log.Timber
 
 class NoteFragment : Fragment() {
     private val viewModel: NoteViewModel by viewModels()
@@ -38,7 +42,9 @@ class NoteFragment : Fragment() {
         binding = FragmentNoteBinding.inflate(layoutInflater)
         arguments?.let {
             noteId = NoteFragmentArgs.fromBundle(it).id
+            Log.d("NoteId", "Note Id value is $noteId")
         }
+        setHasOptionsMenu(true)
         return binding!!.root
     }
 
@@ -54,7 +60,6 @@ class NoteFragment : Fragment() {
 
         if (noteId != 0L) {
             viewModel.getNote(noteId)
-            Timber.d("IdNote is not null and have call to viewmodel")
         }
 
         super.onViewCreated(view, savedInstanceState)
@@ -75,7 +80,6 @@ class NoteFragment : Fragment() {
                     currentNote = noteValue
                     title.setText(noteValue.title)
                     description.setText(noteValue.content)
-                    Timber.d("It was loaded a note successfully")
                 }
             }
         }
@@ -100,10 +104,32 @@ class NoteFragment : Fragment() {
         }
 
         binding?.noteBtnDelete?.setOnClickListener {
-            Log.e("TAG", "$currentNote")
             viewModel.removeNote(noteValue = currentNote)
-            Timber.d("User is trying to remove note")
             findNavController().popBackStack()
         }
+    }
+
+    override fun onCreateOptionsMenu(
+        menu: Menu,
+        inflater: MenuInflater,
+    ) {
+        inflater.inflate(R.menu.note_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.note_delete_icon && noteId != 0L) {
+            AlertDialog
+                .Builder(context)
+                .setTitle("Delete note")
+                .setMessage("Are you sure you want to delete this note?")
+                .setPositiveButton("Yes") { _, _ ->
+                    viewModel.removeNote(noteValue = currentNote)
+                    findNavController().popBackStack()
+                }.setNegativeButton("Cancel") { _, _ -> }
+                .create()
+                .show()
+        }
+        return true
     }
 }

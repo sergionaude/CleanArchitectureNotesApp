@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs")
     id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
+//    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -93,11 +93,12 @@ dependencies {
     testImplementation("androidx.room:room-testing:2.6.1")
 
     // Hilt dependency injection
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+//    implementation("com.google.dagger:hilt-android:2.51.1")
+//    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
-    // Timber
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("com.google.dagger:dagger:2.14.1")
+    kapt("com.google.dagger:dagger-compiler:2.14.1")
+    kapt("com.google.dagger:dagger-android-processor:2.14.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")

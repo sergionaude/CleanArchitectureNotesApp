@@ -4,37 +4,32 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.sergionaude.cleanarchitecturenotesapp.framework.RoomDataBaseService
 import com.sergionaude.cleanarchitecturenotesapp.framework.UseCases
+import com.sergionaude.cleanarchitecturenotesapp.framework.di.ApplicationModule
+import com.sergionaude.cleanarchitecturenotesapp.framework.di.DaggerViewModelComponent
 import com.sergionaude.core.data.Note
-import com.sergionaude.core.repository.NoteRepository
-import com.sergionaude.core.usecase.AddNote
-import com.sergionaude.core.usecase.GetAllNotes
-import com.sergionaude.core.usecase.GetNote
-import com.sergionaude.core.usecase.RemoveNote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class NoteViewModel(
     application: Application,
 ) : AndroidViewModel(application = application) {
-    private val noteRepository = NoteRepository(RoomDataBaseService(context = application))
+    @Inject lateinit var useCases: UseCases
 
-    private val useCases =
-        UseCases(
-            addNote = AddNote(noteRepository = noteRepository),
-            getNote = GetNote(noteRepository = noteRepository),
-            getAllNotes = GetAllNotes(noteRepository = noteRepository),
-            removeNote = RemoveNote(noteRepository = noteRepository),
-        )
-
-    val saved = MutableLiveData<Boolean>(false)
-
-    val note = MutableLiveData<Note?>()
+    val saved = MutableLiveData(false)
 
     init {
+        DaggerViewModelComponent
+            .builder()
+            .applicationModule(ApplicationModule(getApplication()))
+            .build()
+            .inject(this)
+
         saved.postValue(false)
     }
+
+    val note = MutableLiveData<Note?>()
 
     fun saveNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
